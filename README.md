@@ -2,7 +2,7 @@
 A tutorial on genetics that integrates visualization with ggplot2
 
 ## Introduction
-The goal of this practical is to gain an understanding of how to use natural variation to map a trait of interest. We will be using a diverse array of software and scripts that aid genetic analysis, including:
+The goal of this practical is to gain an understanding of how to use natural variation to map a trait of interest. Whether mapping a gene or quantitative trait locus (QTL), the approaches used are identical. We will be using a diverse array of software and scripts that aid genetic analysis, including:
 1. R
   * qtl
   * ggplot2
@@ -108,6 +108,8 @@ ggplot(pop.data$pheno, aes(PcFN)) + geom_histogram()
 ggplot(pop.data$pheno, aes(BghIFS)) + geom_histogram()
 ```
 
+For an extended resource in using ggplot, please see Dan MacLean's `ggplotbook` tutorial [https://danmaclean.github.io/ggplotbook/](https://danmaclean.github.io/ggplotbook/).
+
 When performing QTL analysis, it is critical to understand the distribution of your data. The type of statistical model may need to be changed, or alternatively, how you interpret your results may change. Generally, you need to be able to answer the following:
 * Qualitative or quantitative or a mixture
 * Linear or non-linear metric
@@ -138,6 +140,14 @@ summary(trait1.im, perms=trait1.im.perm, alpha=0.05, pvalues=TRUE)
 
 plot(trait1.im)
 add.threshold(trait1.im, perms=trait1.im.perm, alpha=0.05, col="red")
+```
+
+One of the most powerful approaches at QTL analysis is composite interval mapping. This takes into account major effect loci that contribute to a phenotype and incorporates these into the regression analysis for identifying significant QTL. The main parameter to select is the number of covariate loci (n.marcovar). This can generally be set at 5 loci without need for change.
+
+```R
+trait1.cim = cim(pop.data, pheno.col=1, n.marcovar=5, method="em", map.function="kosambi")
+plot(trait1.cim)
+summary(trait1.cim)
 ```
 
 ### Steptoe x Morex doubled-haploid population
